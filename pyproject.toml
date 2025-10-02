@@ -1,0 +1,16 @@
+[project]
+name = "moda-automation"
+version = "0.1.0"
+description = "automation tool for moda aparment complex visitor parking"
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+dependencies = [
+    "modal>=1.1.4",
+]
+
+[dependency-groups]
+dev = [
+    "fastapi>=0.118.0",
+    "pydantic>=2.11.9",
+    "pytest-playwright>=0.7.1",
+]
