@@ -1,37 +1,113 @@
 import modal
+from pydantic import BaseModel
+from enum import Enum
 from playwright.async_api import Page
-from typing import Dict
 
-ConfigValue = Dict[str, str]
+
+class VehicleColor(str, Enum):
+    BEIGE = "Beige"
+    BLACK = "Black"
+    BROWN = "Brown"
+    BURGUNDY = "Burgundy"
+    CARBON = "Carbon"
+    COPPER = "Copper"
+    DARK = "Dark"
+    GOLD = "Gold"
+    GREY = "Grey"
+    NAVY = "Navy"
+    PEARL = "Pearl"
+    TAN = "Tan"
+    UNKNOWN = "Unknown"
+    YELLOW = "Yellow"
+    BLUE = "Blue"
+    GRAY = "Gray"
+    GREEN = "Green"
+    MAROON = "Maroon"
+    ORANGE = "Orange"
+    OTHER = "Other"
+    PURPLE = "Purple"
+    RED = "Red"
+    SILVER = "Silver"
+    TAN_BROWN = "Tan/Brown"
+    WHITE = "White"
+    YELLOW_GOLD = "Yellow/Gold"
+
+
+class Config(BaseModel):
+    username: str
+    password: str
+    firstName: str
+    lastName: str
+    apartmentNumber: str
+    emailAddress: str
+    licensePlate: str
+    vehicleYear: str
+    vehicleMake: str
+    vehicleModel: str
+    vehicleColor: VehicleColor
+
+
 app = modal.App(name="moda-automation")
-playwright_image = modal.Image.debian_slim(python_version="3.10").run_commands(
-    "apt-get update",
-    "apt-get install -y software-properties-common",
-    "apt-add-repository non-free",
-    "apt-add-repository contrib",
-    "pip install playwright==1.42.0",
-    "playwright install-deps chromium",
-    "playwright install chromium",
+image = (
+    modal.Image.debian_slim(python_version="3.10")
+    .run_commands(
+        "apt-get update",
+        "apt-get install -y software-properties-common",
+        "apt-add-repository non-free",
+        "apt-add-repository contrib",
+        "pip install playwright==1.42.0",
+        "playwright install-deps chromium",
+        "playwright install chromium",
+    )
+    .pip_install("fastapi[standard]")
 )
 moda_configs_dictionary_name = "moda-configs-dictionary"
+moda_configs_dict = modal.Dict.from_name(
+    moda_configs_dictionary_name, create_if_missing=True
+)
 
 
-@app.function(image=playwright_image, schedule=modal.Period(days=1))
+@app.function(image=image)
+@modal.fastapi_endpoint(method="POST", requires_proxy_auth=True)
+async def update_config(config: Config):
+    moda_configs_dict[config.emailAddress] = config
+    return "update_config_success"
+
+
+@app.function(image=image)
+@modal.fastapi_endpoint(method="DELETE", requires_proxy_auth=True)
+async def delete_config(email: str):
+    if email in moda_configs_dict:
+        del moda_configs_dict[email]
+    return "delete_config_success"
+
+
+@app.function(image=image)
+@modal.fastapi_endpoint(method="GET", requires_proxy_auth=True)
+async def list_configs():
+    return moda_configs_dict
+
+
+@app.function(
+    image=image,
+    schedule=modal.Cron("0 2 * * * ", timezone="America/Chicago"),
+)
 def get_moda_permits():
     moda_configs = modal.Dict.from_name(
         moda_configs_dictionary_name, create_if_missing=True
     )
+    print(f"moda_configs: {moda_configs}")
+    print(f"moda_configs.values(): {moda_configs.values()}")
     list(get_moda_permit.map(moda_configs.values()))
 
 
-@app.function(image=playwright_image)
-async def get_moda_permit(config: ConfigValue):
+@app.function(image=image)
+async def get_moda_permit(config: Config):
     from playwright.async_api import async_playwright
 
     async with async_playwright() as p:
-        print(
-            f"Attempting to fill form for {config.get('firstName', 'None')} {config.get('lastName', 'None')}"
-        )
+        print(f"This is the config: {config} {type(config)}")
+        print(f"Attempting to fill form for [{config.firstName},{config.lastName}]")
         SECOND = 1000
         browser = await p.chromium.launch(
             timeout=30 * SECOND,
@@ -55,9 +131,9 @@ async def get_moda_permit(config: ConfigValue):
         print("Browser closed.")
 
 
-async def login(page: Page, config: ConfigValue):
-    await page.fill("#edit-name", config["username"])
-    await page.fill("#edit-pass", config["password"])
+async def login(page: Page, config: Config):
+    await page.fill("#edit-name", config.username)
+    await page.fill("#edit-pass", config.password)
     await page.click("#edit-submit")
     await page.wait_for_load_state("networkidle")
 
@@ -67,7 +143,7 @@ async def click_register_my_vehicle(page: Page):
     await page.wait_for_load_state("networkidle")
 
 
-async def fill_permit_form(page: Page, config: ConfigValue):
+async def fill_permit_form(page: Page, config: Config):
     first_name_selector = 'input[name="name_0[0][value]"]'
     last_name_selector = 'input[name="cfc_text_0[0][value]"]'
     apartment_number_selector = 'input[name="apartment_number[0][value]"]'
@@ -78,14 +154,14 @@ async def fill_permit_form(page: Page, config: ConfigValue):
     vehicle_model_selector = 'input[name="vehicle[0][model]"]'
     vehicle_color_dropdown_selector = 'div[name="vehicle_color[0][tid]"]'
 
-    await page.fill(first_name_selector, config["firstName"])
-    await page.fill(last_name_selector, config["lastName"])
-    await page.fill(apartment_number_selector, config["apartmentNumber"])
-    await page.fill(email_selector, config["emailAddress"])
-    await page.fill(license_plate_selector, config["licensePlate"])
-    await page.fill(vehicle_year_selector, config["vehicleYear"])
-    await page.fill(vehicle_make_selector, config["vehicleMake"])
-    await page.fill(vehicle_model_selector, config["vehicleModel"])
+    await page.fill(first_name_selector, config.firstName)
+    await page.fill(last_name_selector, config.lastName)
+    await page.fill(apartment_number_selector, config.apartmentNumber)
+    await page.fill(email_selector, config.emailAddress)
+    await page.fill(license_plate_selector, config.licensePlate)
+    await page.fill(vehicle_year_selector, config.vehicleYear)
+    await page.fill(vehicle_make_selector, config.vehicleMake)
+    await page.fill(vehicle_model_selector, config.vehicleModel)
 
     await page.click(vehicle_color_dropdown_selector)
 
@@ -118,7 +194,7 @@ async def fill_permit_form(page: Page, config: ConfigValue):
         "Yellow/Gold": 26,
     }
 
-    for _ in range(color_map.get(config["vehicleColor"], 0)):
+    for _ in range(color_map.get(config.vehicleColor, 0)):
         await page.keyboard.press("ArrowDown")
     await page.keyboard.press("Enter")
 
@@ -133,10 +209,3 @@ async def submit_form(page: Page):
 @app.local_entrypoint()
 def main():
     get_moda_permits.remote()
-
-
-# another feature would be to collect the
-# cookies it gets from signing up and send
-# the user an email with a link that gives
-# them cookies so they can view the tactical.omadi
-# permit
