@@ -17,23 +17,19 @@ document.addEventListener("DOMContentLoaded", function () {
 	};
 
 	const uploadConfigToModal = async (config) => {
-		const res = await modalRequest(
+		await modalRequest(
 			"https://benwowo--moda-automation-update-config.modal.run/",
 			"POST",
 			config
 		);
-		const data = await res.json();
-		return data;
 	};
 
 	const getModaPermit = async (config) => {
-		const res = await modalRequest(
+		await modalRequest(
 			"https://benwowo--moda-automation-get-moda-permit.modal.run/",
 			"POST",
 			config
 		);
-		const data = await res.json();
-		return data;
 	};
 
 	const loadFormData = () => {
@@ -98,9 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		getModaPermit(config);
 
-		// Show success message + have my own modal popup with success info
-		console.log("Form submitted successfully!", formValues);
-		console.log("Submission type:", isRecurring ? "Recurring" : "One-time");
+		const successMessage = document.getElementById("successMessage");
+		successMessage.classList.remove("invisible");
 
 		// Clear form data from localStorage after successful submission
 		clearFormData();
