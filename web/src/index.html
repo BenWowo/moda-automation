@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Moda automation form</title>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="assets/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="assets/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="assets/favicon-16x16.png"
+		/>
+		<link rel="icon" type="image/png" href="assets/favicon.ico" />
+		<link rel="manifest" href="assets/site.webmanifest" />
+		<link href="./css/output.css" rel="stylesheet" />
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<div class="mx-auto min-h-screen px-4 max-w-5xl">
+			<div class="text-center mt-6 mb-2">
+				form to automate
+				<a
+					class="underline hover:cursor-pointer"
+					href="https://tactical.omadi.com/user"
+					>moda permit creation</a
+				>
+				process.
+			</div>
+			<form class="grid grid-cols-2 border-2 p-4 gap-4">
+				<h2 class="col-span-2 font-bold">personal info</h2>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="username">username</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="username"
+						name="username"
+						value="moda visitor"
+						required
+						autocomplete="off"
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="password">password</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="password"
+						name="password"
+						autocomplete="off"
+						value="modrvp"
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="firstName">first name</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="firstName"
+						name="firstName"
+						autofocus
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="lastName">last name</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="lastName"
+						name="lastName"
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="apartmentNumber">apartment number</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="apartmentNumber"
+						name="apartmentNumber"
+						value="642"
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="emailAddress">email address</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="email"
+						id="emailAddress"
+						name="emailAddress"
+						required
+					/>
+				</div>
+				<h2 class="col-span-2 font-bold">vehicle info</h2>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="licensePlate">license plate</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="licensePlate"
+						name="licensePlate"
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="state">state</label>
+					<select
+						class="border px-2 py-1 focus:outline-none"
+						id="state"
+						name="state"
+						required
+					>
+						<option value="Texas">Texas</option>
+						<option value="None">None</option>
+					</select>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="vehicleMake">vehicle make</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="vehicleMake"
+						name="vehicleMake"
+						placeholder="Toyota, Ford, etc..."
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="vehicleModel">vehicle model</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
+						id="vehicleModel"
+						name="vehicleModel"
+						placeholder="Camry, F-150, etc..."
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="vehicleYear">vehicle year</label>
+					<input
+						class="border px-2 py-1 focus:outline-none"
+						type="number"
+						id="vehicleYear"
+						name="vehicleYear"
+						min="1900"
+						max="2030"
+						required
+					/>
+				</div>
+				<div class="flex flex-col max-xs:col-span-2">
+					<label for="vehicleColor">vehicle color</label>
+					<select
+						class="border px-2 py-1 focus:outline-none"
+						id="vehicleColor"
+						name="vehicleColor"
+						required
+					>
+						<option value="Beige">Beige</option>
+						<option value="Black">Black</option>
+						<option value="Brown">Brown</option>
+						<option value="Burgundy">Burgundy</option>
+						<option value="Carbon">Carbon</option>
+						<option value="Copper">Copper</option>
+						<option value="Dark">Dark</option>
+						<option value="Gold">Gold</option>
+						<option value="Grey">Grey</option>
+						<option value="Navy">Navy</option>
+						<option value="Pearl">Pearl</option>
+						<option value="Tan">Tan</option>
+						<option value="Unknown">Unknown</option>
+						<option value="Yellow">Yellow</option>
+						<option value="Blue">Blue</option>
+						<option value="Gray">Gray</option>
+						<option value="Green">Green</option>
+						<option value="Maroon">Maroon</option>
+						<option value="Orange">Orange</option>
+						<option value="Other">Other</option>
+						<option value="Purple">Purple</option>
+						<option value="Red">Red</option>
+						<option value="Silver">Silver</option>
+						<option value="Tan/Brown">Tan/Brown</option>
+						<option value="White">White</option>
+						<option value="Yellow/Gold">Yellow/Gold</option>
+					</select>
+				</div>
+				<button
+					class="w-full border px-4 py-2 bg-gray-200 hover:bg-green-200 focus:outline-none focus:bg-green-200"
+					type="submit"
+					id="oneTimeSubmit"
+				>
+					one time sign in
+				</button>
+				<button
+					class="w-full border px-4 py-2 bg-gray-200 hover:bg-blue-200 focus:outline-none focus:bg-blue-200"
+					type="submit"
+					id="recurringSubmit"
+				>
+					recurring sign in
+				</button>
+			</form>
+			<div class="text-center mt-4 mb-2">
+				made by
+				<a
+					class="underline hover:underline hover:cursor-pointer"
+					href="https://www.benwowo.com"
+					>ben wowo</a
+				>.
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+cleanup() {
+    echo "Stopping background processes..."
+    kill $SERVER_PID $TAILWIND_PID 2>/dev/null || true
+    exit 0
+}
+
+trap cleanup INT TERM EXIT
+
+scripts/start_server.sh & SERVER_PID=$!
+scripts/start_tailwind.sh & TAILWIND_PID=$!
+
+echo "Started server (PID: $SERVER_PID) and tailwind (PID: $TAILWIND_PID)"
+
+wait

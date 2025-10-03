@@ -68,14 +68,14 @@ moda_configs_dict = modal.Dict.from_name(
 
 
 @app.function(image=image)
-@modal.fastapi_endpoint(method="POST", requires_proxy_auth=True)
+@modal.fastapi_endpoint(method="POST", requires_proxy_auth=False)
 async def update_config(config: Config):
     moda_configs_dict[config.emailAddress] = config
     return "update_config_success"
 
 
 @app.function(image=image)
-@modal.fastapi_endpoint(method="DELETE", requires_proxy_auth=True)
+@modal.fastapi_endpoint(method="DELETE", requires_proxy_auth=False)
 async def delete_config(email: str):
     if email in moda_configs_dict:
         del moda_configs_dict[email]
@@ -83,7 +83,7 @@ async def delete_config(email: str):
 
 
 @app.function(image=image)
-@modal.fastapi_endpoint(method="GET", requires_proxy_auth=True)
+@modal.fastapi_endpoint(method="GET", requires_proxy_auth=False)
 async def list_configs():
     return moda_configs_dict
 
@@ -102,11 +102,11 @@ def get_moda_permits():
 
 
 @app.function(image=image)
+@modal.fastapi_endpoint(method="POST", requires_proxy_auth=False)
 async def get_moda_permit(config: Config):
     from playwright.async_api import async_playwright
 
     async with async_playwright() as p:
-        print(f"This is the config: {config} {type(config)}")
         print(f"Attempting to fill form for [{config.firstName},{config.lastName}]")
         SECOND = 1000
         browser = await p.chromium.launch(
@@ -194,7 +194,7 @@ async def fill_permit_form(page: Page, config: Config):
         "Yellow/Gold": 26,
     }
 
-    for _ in range(color_map.get(config.vehicleColor, 0)):
+    for _ in range(color_map.get(config.vehicleColor, 0) + 1):
         await page.keyboard.press("ArrowDown")
     await page.keyboard.press("Enter")
 
