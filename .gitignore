@@ -12,3 +12,6 @@ wheels/
 
 # Node.js dependencies
 **/node_modules/
+
+# etc
+**/output.css
