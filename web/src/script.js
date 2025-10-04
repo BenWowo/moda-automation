@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	const getModaPermit = async (config) => {
 		await modalRequest(
-			"https://benwowo--moda-automation-get-moda-permit.modal.run/",
+			"https://benwowo--moda-automation-get-moda-permit-webhook.modal.run/",
 			"POST",
 			config
 		);

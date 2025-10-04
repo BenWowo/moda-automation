@@ -103,6 +103,16 @@ def get_moda_permits():
 
 @app.function(image=image)
 @modal.fastapi_endpoint(method="POST", requires_proxy_auth=False)
+async def get_moda_permit_webhook(config: Config):
+    """FastAPI endpoint for external applications to trigger permit creation"""
+    await get_moda_permit(config)
+    return {
+        "status": "success",
+        "message": f"Permit creation initiated for {config.emailAddress}",
+    }
+
+
+@app.function(image=image)
 async def get_moda_permit(config: Config):
     from playwright.async_api import async_playwright
 
