@@ -2,6 +2,48 @@ import modal
 from pydantic import BaseModel
 from enum import Enum
 from playwright.async_api import Page
+import functools
+from datetime import datetime
+
+
+def log_request(func):
+    """
+    Decorator to log request details for Modal webhook functions.
+    Logs function name, timestamp, request parameters, and response status.
+    """
+
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        # Get function name
+        func_name = func.__name__
+
+        timestamp = datetime.now().isoformat()
+        # Log request start
+
+        print(f"START [{timestamp}] {func_name}")
+
+        # Log request parameters
+        if args:
+            for i, arg in enumerate(args):
+                print(f"REQUEST [{func_name}] Arg {i}: {arg}")
+
+        if kwargs:
+            for key, value in kwargs.items():
+                print(f"REQUEST [{func_name}] {key}: {value}")
+
+        try:
+            # Execute the original function
+            result = await func(*args, **kwargs)
+            print(f"RESPONSE [{func_name}] {result}")
+            return result
+
+        except Exception as e:
+            # Log any errors
+            print(f"ERROR [{func_name}] {str(e)}")
+            print(f"ERROR [{func_name}] Exception type: {type(e).__name__}")
+            raise  # Re-raise the exception
+
+    return wrapper
 
 
 class VehicleColor(str, Enum):
@@ -70,6 +112,7 @@ moda_configs_dict = modal.Dict.from_name(
 @app.function(image=image)
 @modal.fastapi_endpoint(method="POST", requires_proxy_auth=False)
 async def update_config(config: Config):
+    print(f"config: {config}")
     moda_configs_dict[config.emailAddress] = config
     return "update_config_success"
 
@@ -77,6 +120,7 @@ async def update_config(config: Config):
 @app.function(image=image)
 @modal.fastapi_endpoint(method="DELETE", requires_proxy_auth=False)
 async def delete_config(email: str):
+    print(f"email: {email}")
     if email in moda_configs_dict:
         del moda_configs_dict[email]
     return "delete_config_success"
@@ -104,7 +148,7 @@ def get_moda_permits():
 @app.function(image=image)
 @modal.fastapi_endpoint(method="POST", requires_proxy_auth=False)
 async def get_moda_permit_webhook(config: Config):
-    """FastAPI endpoint for external applications to trigger permit creation"""
+    print(f"config: {config}")
     await get_moda_permit.local(config)
     return {
         "status": "success",
@@ -114,6 +158,7 @@ async def get_moda_permit_webhook(config: Config):
 
 @app.function(image=image)
 async def get_moda_permit(config: Config):
+    print(f"config: {config}")
     from playwright.async_api import async_playwright
 
     async with async_playwright() as p:
