@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	const form = document.querySelector("form");
+	const successMessage = document.getElementById("successMessage");
 	const STORAGE_KEY = "modaFormData";
 
 	const modalRequest = async (url, method = "GET", body = null) => {
@@ -61,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	};
 
 	const clearFormData = () => {
+		form.reset();
 		localStorage.removeItem(STORAGE_KEY);
 		console.log("Form data cleared from localStorage");
 	};
@@ -94,14 +96,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		getModaPermit(config);
 
-		const successMessage = document.getElementById("successMessage");
 		successMessage.classList.remove("invisible");
 
-		// Clear form data from localStorage after successful submission
 		const rememberCheckbox = document.getElementById("remember-me");
 		if (!rememberCheckbox.checked) {
 			clearFormData();
-			form.reset();
 		}
 	};
 
@@ -112,11 +111,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		input.addEventListener("input", function () {
 			saveFormData();
 			clearValidationError(this);
+			successMessage.classList.add("invisible");
 		});
 
 		input.addEventListener("change", function () {
 			saveFormData();
 			clearValidationError(this);
+			successMessage.classList.add("invisible");
 		});
 	});
 
