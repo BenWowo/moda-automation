@@ -98,8 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		successMessage.classList.remove("invisible");
 
 		// Clear form data from localStorage after successful submission
-		clearFormData();
-		form.reset();
+		const rememberCheckbox = document.getElementById("remember-me");
+		if (!rememberCheckbox.checked) {
+			clearFormData();
+			form.reset();
+		}
 	};
 
 	loadFormData();
