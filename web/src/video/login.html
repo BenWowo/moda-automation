@@ -3,30 +3,51 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Login</title>
+		<title>sign in form.</title>
 		<link href="../css/output.css" rel="stylesheet" />
+		<script src="cookieStore.js"></script>
 		<script src="login.js"></script>
 	</head>
 	<body>
-		<div class="mx-auto min-h-screen px-4 flex items-center justify-center">
-			<div class="border-2 p-8 max-w-md w-full">
-				<h1 class="text-2xl font-bold mb-4">Enter Password</h1>
-				<form id="auth-form" class="flex flex-col gap-4">
+		<div
+			class="mx-auto min-h-screen px-4 min-w-lg max-w-5xl flex flex-col items-center justify-center"
+		>
+			<div class="text-center mb-2">sign in form.</div>
+			<form class="flex flex-col border-2 p-4 gap-4">
+				<h2 class="font-bold">info</h2>
+				<div class="flex flex-col">
+					<label for="password">password</label>
 					<input
-						class="border px-4 py-2 focus:outline-none"
-						type="password"
+						class="border px-2 py-1 focus:outline-none"
+						type="text"
 						id="password"
-						placeholder="Password"
+						name="password"
+						autocomplete="off"
+						value=""
 						required
 					/>
-					<button
-						class="border px-4 py-2 bg-gray-200 hover:bg-green-200 focus:outline-none focus:bg-green-200"
-						type="submit"
-					>
-						Enter
-					</button>
-					<p id="error-message" class="text-red-500 hidden">Incorrect password</p>
-				</form>
+				</div>
+				<button
+					class="w-full border px-4 py-2 bg-gray-200 hover:bg-green-200 focus:outline-none focus:bg-green-200"
+					type="submit"
+					id="submit"
+				>
+					sign in
+				</button>
+			</form>
+			<div class="text-center mt-4 mb-2">
+				<a
+					class="underline hover:cursor-pointer"
+					href="https://github.com/BenWowo/moda-automation"
+					>source</a
+				>
+				made by
+				<a class="underline hover:cursor-pointer" href="https://www.benwowo.com"
+					>ben wowo</a
+				>.
+			</div>
+			<div id="wrong password message" class="invisible text-center">
+				<span class="text-red-400">wrong password</span> try again lol 😹
 			</div>
 		</div>
 	</body>
