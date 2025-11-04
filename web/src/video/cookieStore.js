@@ -21,7 +21,6 @@ class CookieStore {
 		document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
 	}
 
-	// Convenience methods for auth cookie
 	setAuthCookie(value = "yummy") {
 		this.setCookie(this.COOKIE_NAME, value, this.COOKIE_EXPIRY_DAYS);
 	}
