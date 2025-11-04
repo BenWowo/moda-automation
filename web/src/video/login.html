@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login</title>
+		<link href="../css/output.css" rel="stylesheet" />
+		<script src="login.js"></script>
+	</head>
+	<body>
+		<div class="mx-auto min-h-screen px-4 flex items-center justify-center">
+			<div class="border-2 p-8 max-w-md w-full">
+				<h1 class="text-2xl font-bold mb-4">Enter Password</h1>
+				<form id="auth-form" class="flex flex-col gap-4">
+					<input
+						class="border px-4 py-2 focus:outline-none"
+						type="password"
+						id="password"
+						placeholder="Password"
+						required
+					/>
+					<button
+						class="border px-4 py-2 bg-gray-200 hover:bg-green-200 focus:outline-none focus:bg-green-200"
+						type="submit"
+					>
+						Enter
+					</button>
+					<p id="error-message" class="text-red-500 hidden">Incorrect password</p>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
